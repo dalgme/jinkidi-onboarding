@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 222 47% 20%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 20%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 42%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 20%;
+
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 88%;
+    --ring: 222 47% 30%;
+
+    --radius: 0.5rem;
+
+    /* 단계 상태 컬러 — 대비 4.5:1 이상 (WCAG 2.1 AA) */
+    --status-pending-bg: 210 20% 95%;
+    --status-pending-fg: 215 20% 35%;
+    --status-progress-bg: 210 96% 95%;
+    --status-progress-fg: 213 84% 32%;
+    --status-done-bg: 45 96% 92%;
+    --status-done-fg: 32 90% 28%;
+    --status-verified-bg: 145 65% 92%;
+    --status-verified-fg: 150 84% 22%;
+    --status-blocked-bg: 0 90% 96%;
+    --status-blocked-fg: 0 72% 36%;
+    --status-skipped-bg: 210 16% 94%;
+    --status-skipped-fg: 215 14% 46%;
+
+    /* 코멘트 좌우 구분 */
+    --side-agency-bg: 222 47% 96%;
+    --side-agency-fg: 222 47% 25%;
+    --side-client-bg: 160 45% 95%;
+    --side-client-fg: 165 60% 22%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'ss01', 'tnum';
+    /*
+     * 한국어 줄바꿈 품질. 이것이 없으면 단어 중간에서 줄이 바뀌어
+     * 의뢰인이 읽는 안내문이 눈에 띄게 읽기 어려워진다.
+     */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* 링크·버튼의 키보드 포커스가 항상 보이도록 */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2;
+  }
+}
+
+@layer components {
+  /*
+   * 진행률 바 채움. 인라인 style을 쓰지 않기 위해 5% 단위 클래스로 둔다.
+   * (CLAUDE.md §6 — 컴포넌트에 인라인 style 금지)
+   */
+.progress-fill-0 { width: 0%; }
+.progress-fill-5 { width: 5%; }
+.progress-fill-10 { width: 10%; }
+.progress-fill-15 { width: 15%; }
+.progress-fill-20 { width: 20%; }
+.progress-fill-25 { width: 25%; }
+.progress-fill-30 { width: 30%; }
+.progress-fill-35 { width: 35%; }
+.progress-fill-40 { width: 40%; }
+.progress-fill-45 { width: 45%; }
+.progress-fill-50 { width: 50%; }
+.progress-fill-55 { width: 55%; }
+.progress-fill-60 { width: 60%; }
+.progress-fill-65 { width: 65%; }
+.progress-fill-70 { width: 70%; }
+.progress-fill-75 { width: 75%; }
+.progress-fill-80 { width: 80%; }
+.progress-fill-85 { width: 85%; }
+.progress-fill-90 { width: 90%; }
+.progress-fill-95 { width: 95%; }
+.progress-fill-100 { width: 100%; }
+
+  /* 의뢰인이 읽는 마크다운 안내문 */
+  .prose-portal {
+    @apply text-base leading-relaxed text-foreground;
+  }
+  .prose-portal h3 {
+    @apply mb-2 mt-6 text-lg font-semibold;
+  }
+  .prose-portal h4 {
+    @apply mb-2 mt-5 text-base font-semibold;
+  }
+  .prose-portal p {
+    @apply my-3;
+  }
+  .prose-portal ul {
+    @apply my-3 list-disc space-y-2 pl-5;
+  }
+  .prose-portal ol {
+    @apply my-3 list-decimal space-y-2 pl-5;
+  }
+  .prose-portal a {
+    @apply font-medium text-primary underline underline-offset-4;
+  }
+  .prose-portal strong {
+    @apply font-semibold;
+  }
+  .prose-portal code {
+    @apply rounded bg-muted px-1.5 py-0.5 text-sm;
+  }
+  .prose-portal blockquote {
+    @apply my-4 border-l-4 border-border bg-muted/50 py-2 pl-4 text-muted-foreground;
+  }
+
+  /* 코멘트 본문 — 더 조밀하게 */
+  .prose-comment {
+    @apply text-sm leading-relaxed;
+  }
+  .prose-comment p {
+    @apply my-1.5;
+  }
+  .prose-comment ul {
+    @apply my-1.5 list-disc space-y-1 pl-5;
+  }
+  .prose-comment a {
+    @apply underline underline-offset-2;
+  }
+  .prose-comment code {
+    @apply rounded bg-black/5 px-1 py-0.5;
+  }
+}
