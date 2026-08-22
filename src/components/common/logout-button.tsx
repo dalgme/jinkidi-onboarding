@@ -1,24 +1,26 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { LogOut } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { ko } from '@/content/ko'
-import { createClient } from '@/lib/supabase/client'
+
+import { logout } from './logout-action'
 
 export function LogoutButton({ className }: { className?: string }) {
-  const router = useRouter()
-
-  async function logout() {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.replace('/login')
-    router.refresh()
-  }
+  const [pending, setPending] = useState(false)
 
   return (
-    <Button variant="outline" className={className} onClick={() => void logout()}>
+    <Button
+      variant="outline"
+      className={className}
+      disabled={pending}
+      onClick={() => {
+        setPending(true)
+        void logout()
+      }}
+    >
       <LogOut aria-hidden />
       {ko.common.logout}
     </Button>

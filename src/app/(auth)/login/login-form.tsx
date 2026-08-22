@@ -12,7 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ko } from '@/content/ko'
-import { createClient } from '@/lib/supabase/client'
+
+import { sendMagicLink } from './actions'
 
 const RESEND_COOLDOWN_SECONDS = 60
 
@@ -40,17 +41,10 @@ export function LoginForm({ nextPath, initialError }: { nextPath: string | null;
 
   async function send(email: string) {
     setError(null)
-    const supabase = createClient()
-    const redirectTo = new URL('/auth/callback', window.location.origin)
-    if (nextPath) redirectTo.searchParams.set('next', nextPath)
+    const result = await sendMagicLink({ email, next: nextPath ?? undefined })
 
-    const { error: sendError } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo.toString() },
-    })
-
-    if (sendError) {
-      setError(ko.auth.sendFailed)
+    if (!result.ok) {
+      setError(result.message ?? ko.auth.sendFailed)
       return
     }
 

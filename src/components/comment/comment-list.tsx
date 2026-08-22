@@ -1,19 +1,19 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { Trash2 } from 'lucide-react'
-import { toast } from 'sonner'
-
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/common/markdown'
 import { ko } from '@/content/ko'
 import { formatDateTime } from '@/lib/utils/format'
 import { cn } from '@/lib/utils/cn'
 import type { Comment } from '@/types/database'
 
-import { deleteComment } from './actions'
+import { DeleteCommentButton } from './delete-comment-button'
 
+/**
+ * 코멘트 목록 — Server Component.
+ *
+ * 마크다운 렌더링(react-markdown + rehype-sanitize)은 클라이언트 번들에서
+ * 50KB 가까이 차지한다. 렌더 결과는 정적이므로 서버에서 그리고,
+ * 인터랙션이 필요한 삭제 버튼만 클라이언트 컴포넌트로 남긴다.
+ */
 export function CommentList({
   comments,
   currentUserId,
@@ -23,19 +23,12 @@ export function CommentList({
   currentUserId: string | null
   projectCode: string
 }) {
-  const router = useRouter()
-
-  async function remove(commentId: string) {
-    const result = await deleteComment(projectCode, commentId)
-    if (!result.ok) {
-      toast.error(result.message ?? ko.common.unknownError)
-      return
-    }
-    router.refresh()
-  }
-
   if (comments.length === 0) {
-    return <p className="rounded-lg border border-dashed py-8 text-center text-sm text-muted-foreground">{ko.comment.empty}</p>
+    return (
+      <p className="rounded-lg border border-dashed py-8 text-center text-sm text-muted-foreground">
+        {ko.comment.empty}
+      </p>
+    )
   }
 
   return (
@@ -59,15 +52,7 @@ export function CommentList({
                 </Badge>
                 <span className="text-xs opacity-70">{formatDateTime(comment.created_at)}</span>
                 {isMine && !isDeleted ? (
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="h-7 min-h-0 w-7 min-w-0"
-                    onClick={() => void remove(comment.id)}
-                    aria-label={ko.comment.delete}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" aria-hidden />
-                  </Button>
+                  <DeleteCommentButton projectCode={projectCode} commentId={comment.id} />
                 ) : null}
               </div>
 
