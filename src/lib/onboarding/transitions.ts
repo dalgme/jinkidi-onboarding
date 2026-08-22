@@ -63,12 +63,3 @@ export function canTransition({ side, ownerSide, from, to, blockedReason }: Tran
 
   return { ok: true }
 }
-
-/** 전이에 맞춰 함께 갱신해야 하는 타임스탬프 컬럼 */
-export function transitionTimestamps(to: StepStatus, now: string = new Date().toISOString()) {
-  return {
-    client_done_at: to === 'client_done' ? now : null,
-    ...(to === 'verified' ? {} : { verified_at: null, verified_by: null }),
-    blocked_reason: to === 'blocked' ? undefined : null,
-  }
-}

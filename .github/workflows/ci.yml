@@ -31,6 +31,19 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
+      # RLS는 이 프로젝트에서 가장 위험한 부분이다.
+      # 실제 Postgres에 마이그레이션을 적용하고 격리 테스트를 통과시킨다.
+      - name: Install PostgreSQL client and server
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16 postgresql-contrib-16
+
+      - name: Database migrations and RLS isolation tests
+        run: ./scripts/verify-db.sh
+        env:
+          PGBIN: /usr/lib/postgresql/16/bin
+          PGRUNAS: postgres
+
       - name: Build
         run: pnpm build
         env:

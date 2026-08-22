@@ -29,10 +29,6 @@ export function isAutomatable(verifyType: VerifyType): verifyType is Exclude<Ver
   return verifyType !== 'manual'
 }
 
-export function slugFieldFor(verifyType: Exclude<VerifyType, 'manual'>): keyof Project {
-  return SLUG_FIELD[verifyType]
-}
-
 /**
  * 프로젝트에 저장된 slug로 해당 검증을 실행한다.
  * slug가 없으면 error다 — 「아직 안 함」이 아니라 「확인할 수 없음」이기 때문이다.

@@ -124,11 +124,14 @@ function notFoundRedirect(): never {
   notFound()
 }
 
-/** Route Handler용 가드 — redirect 대신 JSON 401/403을 준다 */
+/**
+ * Route Handler용 가드 — redirect 대신 JSON 401/403/404를 준다.
+ * 미들웨어를 신뢰하지 않고 핸들러마다 다시 호출한다.
+ */
 export type GuardFailure = { error: string; status: 401 | 403 | 404 }
 
 export async function guardApiAgencyProject(
-  projectId: string,
+  projectCode: string,
 ): Promise<{ ok: true; ctx: { supabase: Supabase; user: User; project: Project } } | { ok: false; failure: GuardFailure }> {
   const { supabase, user } = await getUser()
   if (!user) return { ok: false, failure: { error: 'unauthorized', status: 401 } }
@@ -136,7 +139,7 @@ export async function guardApiAgencyProject(
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', projectId)
+    .eq('code', projectCode)
     .is('deleted_at', null)
     .maybeSingle<Project>()
 

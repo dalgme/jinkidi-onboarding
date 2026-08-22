@@ -25,7 +25,6 @@ export const ALLOWED_TYPES: AllowedType[] = [
 ]
 
 export const ALLOWED_EXTENSIONS = ALLOWED_TYPES.flatMap((t) => t.extensions)
-export const ALLOWED_MIME_TYPES = ALLOWED_TYPES.flatMap((t) => t.mime)
 
 export type UploadRejection = 'too_large' | 'type_not_allowed' | 'extension_mismatch' | 'empty'
 

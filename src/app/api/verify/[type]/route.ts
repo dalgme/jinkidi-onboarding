@@ -1,10 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 
-import { getUser } from '@/lib/auth/guards'
+import { guardApiAgencyProject } from '@/lib/auth/guards'
 import { writeAudit } from '@/lib/audit'
 import { runVerification } from '@/lib/verify'
-import type { AgencyMember, Project, ProjectStep, VerifyType } from '@/types/database'
+import type { ProjectStep, VerifyType } from '@/types/database'
 
 const bodySchema = z.object({
   projectCode: z.string().min(1),
@@ -34,33 +34,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
   }
 
-  const { supabase, user } = await getUser()
-  if (!user) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-  }
-
-  const { data: project } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('code', parsed.data.projectCode)
-    .is('deleted_at', null)
-    .maybeSingle<Project>()
-
-  if (!project) {
-    return NextResponse.json({ error: 'not_found' }, { status: 404 })
-  }
-
   // 검증은 개발사만 실행할 수 있다. 의뢰인이 자기 단계를 verified로 올리는 경로가 되면 안 된다.
-  const { data: member } = await supabase
-    .from('agency_members')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('agency_id', project.agency_id)
-    .maybeSingle<AgencyMember>()
-
-  if (!member) {
-    return NextResponse.json({ error: 'forbidden' }, { status: 403 })
+  const guard = await guardApiAgencyProject(parsed.data.projectCode)
+  if (!guard.ok) {
+    return NextResponse.json({ error: guard.failure.error }, { status: guard.failure.status })
   }
+  const { supabase, user, project } = guard.ctx
 
   const { data: step } = await supabase
     .from('project_steps')

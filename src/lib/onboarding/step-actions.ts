@@ -9,7 +9,7 @@ import { writeAudit } from '@/lib/audit'
 import { canTransition } from '@/lib/onboarding/transitions'
 import { touchClientActivity } from '@/lib/projects/queries'
 import { notifyStepVerified } from '@/lib/mail/notify'
-import type { ProjectStep, StepStatus } from '@/types/database'
+import type { ProjectStep } from '@/types/database'
 
 const changeStatusSchema = z.object({
   projectCode: z.string().min(1),
@@ -124,8 +124,4 @@ export async function changeStepStatus(input: unknown): Promise<StepActionResult
   revalidatePath(`/p/${projectCode}/steps/${step.key}`)
 
   return { ok: true }
-}
-
-export async function isBlockedTransition(status: StepStatus): Promise<boolean> {
-  return status === 'blocked'
 }

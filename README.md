@@ -51,11 +51,28 @@ psql "$DATABASE_URL" -f supabase/seed.sql     # 기본 템플릿·문답·요율
 pnpm db:types                                 # src/types/database.ts 재생성
 ```
 
-RLS가 실제로 막고 있는지 확인한다. 통과하지 않으면 배포하지 않는다.
+RLS가 실제로 막고 있는지 확인한다. **통과하지 않으면 배포하지 않는다.**
 
 ```bash
-psql "$DATABASE_URL" -f supabase/tests/rls.sql
+./scripts/verify-db.sh        # 임시 Postgres를 띄워 마이그레이션 + 시드 + 격리 테스트
 ```
+
+Supabase 프로젝트 없이도 돌아가며 CI에서 매번 실행된다. 검사하는 것은 다음 열한 가지다.
+
+| # | 검사 |
+|---|---|
+| 1 · 8 | A사 의뢰인이 B사 프로젝트를 조회하면 0행 (양방향) |
+| 2 | 의뢰인이 `verified`로 올리는 것이 차단됨 |
+| 2b | 의뢰인이 `client_done`으로 바꾸는 것은 정상 동작 |
+| 3 | 개발사 담당 단계를 의뢰인이 못 건드림 |
+| 4 | 의뢰인이 단계 제목·검증 결과를 못 고침 |
+| 5 · 10a | 감사 로그를 의뢰인이 수정·삭제할 수 없음 |
+| 6 | `draft` 산출물이 의뢰인에게 보이지 않음 |
+| 7 | 의뢰인이 개발사 명의로 코멘트를 달 수 없음 |
+| 9 | 개발사의 정당한 권한은 그대로 살아 있음 |
+| 10 | 불변 테이블이 FK 참조 동작(CASCADE·SET NULL)을 막지 않음 |
+
+기존 DB에 대고 돌리려면 `DATABASE_URL=postgres://... ./scripts/verify-db.sh`.
 
 Dashboard에서 두 가지를 함께 설정한다.
 

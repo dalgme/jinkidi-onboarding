@@ -180,7 +180,13 @@ begin
     delete from public.audit_logs where id = '77777777-7777-4777-a777-00000000000a';
   exception when others then blocked := true;
   end;
-  raise notice 'PASS 5: audit_logs append-only';
+  /*
+   * 여기서 「행이 남아 있는지」를 의뢰인 세션으로 확인할 수는 없다.
+   * client_visible = false인 감사 로그는 애초에 의뢰인에게 «보이지 않기» 때문에
+   * 삭제되지 않았어도 select가 0행을 준다.
+   * 실제 잔존 여부는 아래 10번에서 권한을 되돌린 뒤 확인한다.
+   */
+  raise notice 'PASS 5: audit_logs update/delete rejected for client';
 end;
 $$;
 
@@ -248,6 +254,29 @@ begin
     raise exception 'FAIL 9b: agency cannot verify a step';
   end if;
   raise notice 'PASS 9: agency retains full access';
+end;
+$$;
+
+-- 10. 불변성이 외래 키 참조 동작까지 막지는 않아야 한다.
+--     (20260821000500 마이그레이션이 고친 문제 — 트리거로 막으면 여기서 실패한다)
+reset role;
+select set_config('request.jwt.claims', '', true);
+do $$
+begin
+  -- 5번에서 의뢰인이 시도한 UPDATE·DELETE가 실제로 반영되지 않았어야 한다
+  if not exists (
+    select 1 from public.audit_logs
+     where id = '77777777-7777-4777-a777-00000000000a' and action = 'test.seed'
+  ) then
+    raise exception 'FAIL 10a: audit log was mutated or deleted by a client';
+  end if;
+
+  -- 그러면서도 감사 로그가 달린 프로젝트는 지울 수 있어야 한다 (ON DELETE CASCADE)
+  delete from public.projects where id = '44444444-4444-4444-a444-00000000000a';
+  if exists (select 1 from public.projects where id = '44444444-4444-4444-a444-00000000000a') then
+    raise exception 'FAIL 10: project with audit logs could not be deleted';
+  end if;
+  raise notice 'PASS 10: FK cascade still works with append-only tables';
 end;
 $$;
 

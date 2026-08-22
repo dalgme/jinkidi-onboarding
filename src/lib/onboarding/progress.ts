@@ -1,4 +1,4 @@
-import type { OwnerSide, ProjectStep, StepStatus } from '@/types/database'
+import type { OwnerSide, StepStatus } from '@/types/database'
 
 /**
  * 진행률 계산 — 설계 문서 2.2.2 / CLAUDE.md §10
@@ -80,11 +80,4 @@ export const STALLED_THRESHOLD_DAYS = 7
 export function isStalled(project: { last_client_activity_at: string | null }, now: Date = new Date()): boolean {
   const days = daysSince(project.last_client_activity_at, now)
   return days !== null && days >= STALLED_THRESHOLD_DAYS
-}
-
-export function summarizeSteps(steps: readonly ProjectStep[]) {
-  return {
-    progress: calculateProgress(steps),
-    next: findNextClientStep(steps),
-  }
 }
