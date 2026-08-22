@@ -47,9 +47,9 @@ export default async function ClientsPage() {
               {rows.map((client) => (
                 <TableRow key={client.id}>
                   <TableCell className="font-medium">{client.name}</TableCell>
-                  <TableCell className="text-sm">{client.contact_name ?? '—'}</TableCell>
-                  <TableCell className="text-sm">{client.contact_email ?? '—'}</TableCell>
-                  <TableCell className="text-sm">{client.contact_phone ?? '—'}</TableCell>
+                  <TableCell className="text-sm">{client.contact_name ?? ko.common.dash}</TableCell>
+                  <TableCell className="text-sm">{client.contact_email ?? ko.common.dash}</TableCell>
+                  <TableCell className="text-sm">{client.contact_phone ?? ko.common.dash}</TableCell>
                   <TableCell className="whitespace-nowrap text-sm">{formatDate(client.created_at)}</TableCell>
                 </TableRow>
               ))}

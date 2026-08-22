@@ -4,6 +4,7 @@ import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 
+import { ko } from '@/content/ko'
 import { cn } from '@/lib/utils/cn'
 
 const Dialog = DialogPrimitive.Root
@@ -35,7 +36,7 @@ const DialogContent = React.forwardRef<
       {children}
       <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring">
         <X className="h-4 w-4" />
-        <span className="sr-only">닫기</span>
+        <span className="sr-only">{ko.common.dismiss}</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPrimitive.Portal>

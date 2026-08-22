@@ -41,7 +41,7 @@ export default async function ProjectSettingsPage({ params }: { params: Promise<
               {list.map((member) => (
                 <li key={member.id} className="flex items-center justify-between gap-3 border-b pb-2 last:border-0">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{member.display_name ?? '—'}</p>
+                    <p className="truncate text-sm font-medium">{member.display_name ?? ko.common.dash}</p>
                     <p className="text-xs text-muted-foreground">{formatDateTime(member.created_at)}</p>
                   </div>
                   <Badge variant={member.role === 'owner' ? 'client' : 'outline'}>

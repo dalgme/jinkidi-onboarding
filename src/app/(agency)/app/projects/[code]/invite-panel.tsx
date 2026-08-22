@@ -99,7 +99,7 @@ export function InvitePanel({ projectCode, invites }: { projectCode: string; inv
                 <li key={invite.id} className="flex items-center justify-between gap-2 text-sm">
                   <div className="min-w-0">
                     <p className="truncate">{invite.email}</p>
-                    <p className="text-xs text-muted-foreground">{formatDate(invite.expires_at)}까지</p>
+                    <p className="text-xs text-muted-foreground">{ko.agency.inviteExpiresAt(formatDate(invite.expires_at))}</p>
                   </div>
                   <div className="flex shrink-0 items-center gap-1">
                     {invite.accepted_at ? (

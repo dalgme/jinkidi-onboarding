@@ -43,7 +43,7 @@ export default async function PortalCostPage({ params }: { params: Promise<{ cod
       <div>
         <h2 className="text-xl font-semibold tracking-tight">{ko.portal.costTitle}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          {ko.cost.ratesBasis(snapshot.rates_effective_from)} · {formatDate(snapshot.created_at)} 산출
+          {ko.cost.ratesBasis(snapshot.rates_effective_from)} · {ko.cost.calculatedAt(formatDate(snapshot.created_at))}
         </p>
       </div>
 
@@ -52,7 +52,8 @@ export default async function PortalCostPage({ params }: { params: Promise<{ cod
           <p className="text-sm text-muted-foreground">{ko.cost.monthlyTotal}</p>
           <p className="mt-1 text-3xl font-semibold tabular-nums">{formatKrw(Number(snapshot.monthly_total_krw))}</p>
           <p className="mt-1 text-sm text-muted-foreground tabular-nums">
-            {formatUsd(Number(snapshot.monthly_total_usd))} · 환율 {Number(snapshot.usd_krw_rate).toLocaleString('ko-KR')}원
+            {formatUsd(Number(snapshot.monthly_total_usd))} ·{' '}
+            {ko.cost.appliedRate(Number(snapshot.usd_krw_rate).toLocaleString('ko-KR'))}
           </p>
         </CardContent>
       </Card>

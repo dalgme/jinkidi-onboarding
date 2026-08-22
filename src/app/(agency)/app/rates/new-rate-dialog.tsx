@@ -100,15 +100,15 @@ export function NewRateDialog() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rate-plan">Plan</Label>
+              <Label htmlFor="rate-plan">{ko.agency.ratePlanLabel}</Label>
               <Input id="rate-plan" {...form.register('plan', { required: true })} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rate-item">{ko.cost.itemLabel} key</Label>
+              <Label htmlFor="rate-item">{ko.agency.rateItemKeyLabel}</Label>
               <Input id="rate-item" placeholder="bandwidth_gb" {...form.register('itemKey', { required: true })} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rate-unit">Unit</Label>
+              <Label htmlFor="rate-unit">{ko.agency.rateUnitLabel}</Label>
               <Input id="rate-unit" {...form.register('unit', { required: true })} />
             </div>
           </div>
@@ -124,17 +124,17 @@ export function NewRateDialog() {
               <Input id="rate-included" type="number" step="0.001" {...form.register('includedQty')} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rate-unit-price">단가 (USD)</Label>
+              <Label htmlFor="rate-unit-price">{ko.agency.rateUnitPriceLabel}</Label>
               <Input id="rate-unit-price" type="number" step="0.0001" {...form.register('unitPriceUsd')} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rate-fixed">고정 (USD)</Label>
+              <Label htmlFor="rate-fixed">{ko.agency.rateFixedPriceLabel}</Label>
               <Input id="rate-fixed" type="number" step="0.01" {...form.register('fixedPriceUsd')} />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="rate-effective">적용일</Label>
+            <Label htmlFor="rate-effective">{ko.agency.rateEffectiveFromLabel}</Label>
             <Input id="rate-effective" type="date" {...form.register('effectiveFrom', { required: true })} />
           </div>
 

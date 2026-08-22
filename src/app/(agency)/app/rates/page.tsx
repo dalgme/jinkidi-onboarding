@@ -43,12 +43,12 @@ export default async function RatesPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>{ko.cost.serviceLabel}</TableHead>
-                <TableHead>Plan</TableHead>
+                <TableHead>{ko.agency.ratePlanLabel}</TableHead>
                 <TableHead>{ko.cost.itemLabel}</TableHead>
                 <TableHead className="text-right">{ko.cost.includedLabel}</TableHead>
-                <TableHead className="text-right">단가</TableHead>
-                <TableHead className="text-right">고정</TableHead>
-                <TableHead>적용일</TableHead>
+                <TableHead className="text-right">{ko.agency.rateUnitPriceLabel}</TableHead>
+                <TableHead className="text-right">{ko.agency.rateFixedPriceLabel}</TableHead>
+                <TableHead>{ko.agency.rateEffectiveFromLabel}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

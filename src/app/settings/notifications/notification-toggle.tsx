@@ -40,10 +40,10 @@ export function NotificationToggle({
           onCheckedChange={(c) => void toggle(c === true)}
           aria-label={ko.mail.footerOptOut}
         />
-        <span className="text-sm">진행 알림 메일을 받지 않겠습니다</span>
+        <span className="text-sm">{ko.mail.optOutToggleLabel}</span>
       </label>
       <p className="text-xs text-muted-foreground">
-        초대 메일은 계정 연결에 필요하므로 이 설정과 무관하게 발송됩니다.
+        {ko.mail.optOutInviteNotice}
       </p>
     </div>
   )

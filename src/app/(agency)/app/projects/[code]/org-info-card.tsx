@@ -96,7 +96,7 @@ function EditableRow({
     <div className="flex items-center justify-between gap-2 border-b py-2 last:border-0">
       <span className="text-sm text-muted-foreground">{label}</span>
       <div className="flex items-center gap-1">
-        <span className="text-sm">{value || '—'}</span>
+        <span className="text-sm">{value || ko.common.dash}</span>
         <Button size="icon" variant="ghost" onClick={() => setEditing(true)} aria-label={`${label} ${ko.common.edit}`}>
           <Pencil aria-hidden />
         </Button>

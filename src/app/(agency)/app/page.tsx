@@ -87,7 +87,7 @@ export default async function AgencyProjectsPage({
                     </Link>
                     <p className="text-xs text-muted-foreground">{project.code}</p>
                   </TableCell>
-                  <TableCell className="text-sm">{project.clients?.name ?? '—'}</TableCell>
+                  <TableCell className="text-sm">{project.clients?.name ?? ko.common.dash}</TableCell>
                   <TableCell>
                     <Badge variant={STATUS_VARIANT[project.status]}>{ko.agency.projectStatus[project.status]}</Badge>
                   </TableCell>

@@ -179,16 +179,16 @@ function describeNews(log: AuditLog): string {
 
   switch (log.action) {
     case 'step.verify_run':
-      return meta.status === 'verified' ? '단계 확인이 완료되었습니다.' : '단계를 확인했습니다.'
+      return meta.status === 'verified' ? ko.portal.news.stepVerified : ko.portal.news.stepChecked
     case 'step.status_changed':
-      return '단계 상태가 업데이트되었습니다.'
+      return ko.portal.news.stepStatusChanged
     case 'deliverable.shared':
       return meta.deliverable_title
-        ? `개발사가 산출물 «${meta.deliverable_title}»을(를) 공유했습니다.`
-        : '새 산출물이 공유되었습니다.'
+        ? ko.portal.news.deliverableShared(meta.deliverable_title)
+        : ko.portal.news.deliverableSharedPlain
     case 'comment.created':
-      return '새 코멘트가 등록되었습니다.'
+      return ko.portal.news.commentCreated
     default:
-      return '프로젝트에 변경이 있었습니다.'
+      return ko.portal.news.generic
   }
 }

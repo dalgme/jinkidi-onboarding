@@ -57,7 +57,7 @@ export default async function AgencyIntakePage({ params }: { params: Promise<{ c
               </Badge>
             ) : null}
             {response.submitted_at ? (
-              <Badge variant="verified">{formatDateTime(response.submitted_at)} 제출</Badge>
+              <Badge variant="verified">{ko.agency.intakeSubmittedAt(formatDateTime(response.submitted_at))}</Badge>
             ) : (
               <Badge variant="pending">{ko.agency.invitePending}</Badge>
             )}

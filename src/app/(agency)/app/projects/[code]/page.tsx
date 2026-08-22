@@ -95,7 +95,7 @@ export default async function ProjectOverviewPage({ params }: { params: Promise<
                 target="_blank"
                 className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4"
               >
-                의뢰인 화면 미리 보기
+                {ko.agency.previewPortal}
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />
               </Link>
             </div>
@@ -123,7 +123,7 @@ function Row({ label, value }: { label: string; value: string | null | undefined
   return (
     <div className="flex items-start justify-between gap-3">
       <span className="shrink-0 text-muted-foreground">{label}</span>
-      <span className="text-right">{value && value !== '—' ? value : '—'}</span>
+      <span className="text-right">{value && value !== ko.common.dash ? value : ko.common.dash}</span>
     </div>
   )
 }
