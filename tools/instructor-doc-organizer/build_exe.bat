@@ -6,7 +6,7 @@ call .venv\Scripts\activate.bat
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
 REM 2) 실행 파일(.exe) 만들기 → dist\강사서류정리기.exe
-pyinstaller --noconfirm --onefile --windowed --name 강사서류정리기 --collect-all pymupdf --hidden-import win32com.client --hidden-import pythoncom run.pyw
+pyinstaller --noconfirm --onefile --windowed --name 강사서류정리기 --collect-all pymupdf --collect-all pillow_heif --hidden-import win32com.client --hidden-import pythoncom --hidden-import winocr --collect-submodules winrt run.pyw
 copy /Y config.example.json dist\config.example.json > nul
 echo.
 echo 완료: dist\강사서류정리기.exe

@@ -81,10 +81,22 @@ D:\강사서류_통합\                     ← 자동 생성
 
 화면의 **스캔본 글자 인식(OCR)** 을 `자동`으로 두면 Tesseract → Windows OCR 순으로 찾아 씁니다.
 
-### 실행 파일(.exe)로 만들기
+### 실행 파일(.exe)
 
-`build_exe.bat` 실행 → `dist\강사서류정리기.exe` 생성. 다른 PC 에서는 이 exe 만 복사해 쓰면 됩니다
-(단, Office/한글/LibreOffice/Tesseract 는 그 PC 에도 설치되어 있어야 해당 형식 변환 가능).
+**방법 1 — 빌드된 exe 내려받기 (Python 설치 불필요)**
+GitHub 저장소 → *Actions* → **강사 서류 정리기 exe 빌드** → 최근 성공한 실행 → 하단 *Artifacts* 의
+`강사서류정리기-windows` 를 내려받아 압축을 풀면 `강사서류정리기.exe` 가 있습니다.
+이 워크플로는 Windows 서버에서 테스트 → exe 빌드 → **exe 로 샘플 폴더를 실제 변환·분할**까지 확인한 뒤 올립니다.
+`tools/instructor-doc-organizer` 가 바뀔 때마다 자동으로, 또는 *Run workflow* 버튼으로 수동 실행됩니다.
+
+**방법 2 — 내 PC 에서 직접 빌드**: `build_exe.bat` 실행 → `dist\강사서류정리기.exe`
+
+- exe 는 **더블클릭하면 화면**이 뜨고, 인자를 주면 명령줄로 동작합니다
+  (예: `강사서류정리기.exe "D:\강사서류" --ocr none`).
+- `config.json` 은 exe 와 같은 폴더에 두면 적용됩니다.
+- Office/한글/LibreOffice/Tesseract 는 exe 에 포함되지 않습니다. 해당 형식을 변환하려면 그 PC 에 설치되어 있어야 합니다
+  (PDF·이미지는 exe 만으로 처리).
+- 서명되지 않은 exe 라서 처음 실행 시 Windows SmartScreen 경고가 뜰 수 있습니다 → *추가 정보 → 실행*.
 
 ## 4. 사용 방법
 

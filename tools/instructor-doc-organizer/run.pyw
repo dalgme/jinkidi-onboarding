@@ -1,5 +1,11 @@
-"""더블클릭 실행용(콘솔 창 없이 화면만 띄움)."""
+"""실행 파일(.exe) 진입점.
 
-from doc_organizer.gui import main
+인자 없이 실행(더블클릭) → 화면(GUI)
+인자와 함께 실행 → 명령줄 모드 (예: 강사서류정리기.exe "D:\\강사서류" --ocr none)
+"""
 
-main()
+import sys
+
+from doc_organizer.cli import main
+
+sys.exit(main())

@@ -36,7 +36,9 @@ def main(argv: list[str] | None = None) -> int:
     config = load_config(Path(args.config) if args.config else None)
     if args.ocr:
         config["ocr_engine"] = args.ocr
-    pipeline = Pipeline(config, log=print)
+    # 창 모드 exe 에서는 콘솔이 없어(sys.stdout 이 None) print 가 실패한다.
+    # 그 경우에도 처리로그.txt 에는 모두 기록된다.
+    pipeline = Pipeline(config, log=print if sys.stdout else (lambda _m: None))
     started = time.time()
     try:
         if args.rebuild:
@@ -44,9 +46,11 @@ def main(argv: list[str] | None = None) -> int:
         else:
             pipeline.run(Path(args.source), Path(args.output) if args.output else None)
     except ValueError as exc:
-        print(f"오류: {exc}", file=sys.stderr)
+        if sys.stderr:
+            print(f"오류: {exc}", file=sys.stderr)
         return 2
-    print(f"소요 시간: {elapsed(started)}")
+    if sys.stdout:
+        print(f"소요 시간: {elapsed(started)}")
     return 0
 
 

@@ -1,0 +1,63 @@
+name: 강사 서류 정리기 exe 빌드
+
+on:
+  push:
+    paths:
+      - "tools/instructor-doc-organizer/**"
+      - ".github/workflows/instructor-doc-organizer.yml"
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: tools/instructor-doc-organizer
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 패키지 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: 테스트
+        run: python -m pytest -q
+
+      - name: exe 빌드
+        run: >
+          pyinstaller --noconfirm --onefile --windowed --name 강사서류정리기
+          --collect-all pymupdf --collect-all pillow_heif
+          --hidden-import win32com.client --hidden-import pythoncom
+          --hidden-import winocr --collect-submodules winrt
+          run.pyw
+
+      - name: exe 실제 실행 확인 (샘플 폴더 변환·분할)
+        run: |
+          python tests/make_sample.py sample
+          $p = Start-Process -FilePath "dist\강사서류정리기.exe" -ArgumentList '"sample"', '--ocr', 'none' -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "exe 종료 코드 $($p.ExitCode)" }
+          Get-ChildItem sample_통합\홍길동 | Format-Table Name, Length
+          $names = (Get-ChildItem sample_통합\홍길동).Name
+          foreach ($want in @('홍길동_이력서_01.pdf', '홍길동_신분증사본_01.pdf', '홍길동_통장사본_01_KB국민은행_2022.01-2023.12.pdf', '홍길동_통장사본_02_농협은행.pdf')) {
+            if ($names -notcontains $want) { throw "결과 파일 없음: $want" }
+          }
+          if (-not (Test-Path sample_통합\강사별요약.csv)) { throw "요약 보고서 없음" }
+
+      - name: 배포 폴더 구성
+        run: |
+          New-Item -ItemType Directory -Force release | Out-Null
+          Copy-Item dist\강사서류정리기.exe release\
+          Copy-Item config.example.json release\
+          Copy-Item README.md release\사용설명서.md
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 강사서류정리기-windows
+          path: tools/instructor-doc-organizer/release/
+          retention-days: 90
