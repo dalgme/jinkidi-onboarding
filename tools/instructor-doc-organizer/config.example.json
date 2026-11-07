@@ -1,0 +1,16 @@
+{
+  "filename_pattern": "{name}_{doctype}_{seq:02d}{extra}",
+  "bank_extra_fields": ["bank", "period"],
+  "resume_extra_fields": ["date"],
+  "unknown_label": "미분류",
+  "ocr_engine": "auto",
+  "tesseract_cmd": "C:\\Program Files\\Tesseract-OCR\\tesseract.exe",
+  "image_fit_a4": true,
+  "soffice_path": "",
+  "doc_types": {
+    "resume": {
+      "keywords": { "강사소개서": 5 },
+      "filename_hints": ["이력서", "이력", "경력", "프로필", "약력", "resume", "cv", "profile", "소개서"]
+    }
+  }
+}

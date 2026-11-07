@@ -1,0 +1,11 @@
+# 필수
+pymupdf>=1.24
+Pillow>=10.0
+olefile>=0.46
+# Windows: MS Office / 한컴오피스 자동 변환
+pywin32>=306; sys_platform == "win32"
+# 스캔본 글자 인식(OCR) - 둘 중 하나 이상 권장
+pytesseract>=0.3.10
+winocr>=0.0.13; sys_platform == "win32"
+# 아이폰 사진(HEIC)
+pillow-heif>=0.16
